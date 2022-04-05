@@ -1,0 +1,118 @@
+
+<!doctype html><html lang="ru">
+<head>
+  <title>Формирование полетного плана</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https://jqueryui.com/resources/demos/style.css">
+  <link rel="stylesheet" type="text/css" href="./jquery-clockpicker.min.css">
+  <script src="./jquery-3.6.0.js"></script>
+  <script src="./jquery-ui.js"></script>
+  <script src="./datepicker-ru.js"></script>
+  <script src="./jquery-clockpicker.min.js"></script>
+  <script src="./jquery.cookie.js"></script>
+  <script src="./fpln.js"></script>
+<script>
+$( function() {
+  $( "#start-date" ).datepicker({ minDate: 0, maxDate: "+7D", altField: "#start-date-alt", altFormat: "yy-mm-dd" });
+  $( "#start-date" ).datepicker( "option", "dateFormat", "d MM, yy" );
+  $( "#start-date" ).datepicker( "setDate", 'now');
+  $('.clockpicker').clockpicker({ afterDone: function() { console.log("after done");} });
+  $( "#tabs" ).tabs();
+  $( ":input").change(function() {
+    //alert("CHANGE" + this.value + this.id);
+    $.cookie(this.id, this.value, { 'expires': 365 });
+    if (this.id == "start-date") { // Emulate change event for alternative date input field too for save in cookies in right way.
+      let element = document.getElementById('start-date-alt');
+      if ("createEvent" in document) {
+        var evt = document.createEvent("HTMLEvents");
+        evt.initEvent("change", false, true);
+        element.dispatchEvent(evt);
+      }
+      else
+        element.fireEvent("onchange");
+    }
+  });
+  $( ":input").each(function(index) {
+    $(this).val($.cookie(this.id));
+  })
+} );
+</script>
+</head>
+<body>
+<div id="tabs">
+  <ul>
+    <li><a href="#tabs-1">FPL-телеграмма</a></li>
+    <li><a href="#tabs-2">Справочная</a></li>
+  </ul>
+<div id="tabs-1">
+  <p>Дата вылета<br><input type="text" id="start-date"><input type="text" id="start-date-alt" hidden></p>
+  <p>Время вылета (<script type="text/javascript">document.write(Intl.DateTimeFormat().resolvedOptions().timeZone);</script>)
+  <div class="input-group clockpicker" data-autoclose="true">
+    <input type="text" class="form-control" value="09:30" id="start-time" size=5>
+    <span class="input-group-addon">
+        <span class="glyphicon glyphicon-time"></span>
+    </span>
+  </div>
+  </p>
+<p>Продолжительность полета<br>
+<select id="duration">
+  <option value="0030">30 минут</option>
+  <option value="0040">40 минут</option>
+  <option value="0050">50 минут</option>
+  <option value="0100">1 час</option>
+  <option value="0110">1 час 10 минут</option>
+  <option value="0120">1 час 20 минут</option>
+  <option value="0130">1 час 30 минут</option>
+  <option value="0140">1 час 40 минут</option>
+  <option value="0150">1 час 50 минут</option>
+  <option value="0200" selected="selected">2 часа</option>
+  <option value="0215">2 часа 15 минут</option>
+  <option value="0230">2 часа 30 минут</option>
+  <option value="0245">2 часа 45 минут</option>
+  <option value="0300">3 часа</option>
+  <option value="0330">3 часа 30 минут</option>
+  <option value="0400">4 часа</option>
+  <option value="0430">4 часа 30 минут</option>
+  <option value="0500">5 часов</option>
+  <option value="0530">5 часов 30 минут</option>
+  <option value="0600">6 часов</option>
+  <option value="0700">7 часов</option>
+  <option value="0800">8 часов</option>
+</select>
+</p>
+<p>ФИО КВС:<br><input id="kws-fio"></p>
+<p>Телефон КВС:<br>+7<input name="kws-tel" id="kws-tel" size=10></p>
+<p>Регистрационный номер борта:<br>RA-<input id="bort" size=5></p>
+<p>Тип борта (необязательно):<br><input id="bort-type"></p>
+<p>Крейсерская скорость:<br><input id="speed" size=4>&nbsp;км/ч</p>
+<p>Высота полета:<br><input id="altitude" size=4>&nbsp;метров</p>
+<p>Координаты маршрута в формате градусов и <b>минут</b>, как в FPL-телеграмме. Например: 5747N06703E. Минимум 2 координаты. По одной в каждой строке.
+  <br><textarea id="koords" rows=6 cols=11></textarea>
+  <br>
+  <button onclick="$('#koords').val('');$.cookie('koords', '', { 'expires': 0 });">Очистить координаты</button>
+</p>
+<p>
+
+  <button onclick="copyToClipboard();">Рассчитать расстояния, создать план и скопировать его в буфер</button><br>
+<p id="koords_info"></p>
+<textarea id="fplTelegram" rows=9 cols=50 readonly=true hidden></textarea><br>
+</p>
+</div>
+<div id="tabs-2">
+  <h5>Тюмень-контроль (планирование):</h5>
+  <a href=mailto:plan@rgc.ans.aero>plan@rgc.ans.aero</a>
+  +73452293847<br>
+  <h5>Тюмень-информация:</h5>
+  133.4 Мгц
+  +73452293841<br>
+  Тюмень-ATIS:
+  121.7 Мгц<br>
+  <h5>Екатеринбург:</h5> <a href=mailto:zc@ur.gkovd.ru>zc@ur.gkovd.ru</a>
+  +73432058071
+  </div>
+</div>
+<p align=right><small>Связаться с создателем сайта можно по электропочте <b>denis&nbsp;@&nbsp;berloga72.ru</b><br>Создатель сайта не несет никакой отверственности за возможный причиненный ущерб из-за использования этого сайта. Внимательно проверяйте FPL-телеграмму перед ее отправкой.</small></p>
+</body>
+</html>
