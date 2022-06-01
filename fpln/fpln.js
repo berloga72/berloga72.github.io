@@ -23,6 +23,8 @@ function copyToClipboard() {
   var kws_fio = $("#kws-fio").val().toUpperCase();
   var kws_f = kws_fio.split(' ')[0];
   var koord_lines = $("#koords").val().split('\n');
+  var rmk = $("#rmk").val(); if (rmk != "") rmk = ' ' + rmk;
+  var radio = "N/N"; if ($("#radio").is(':checked')) radio = "S/C";
   var distances = [];
   var full_distance = 0;
   $('#koords_info').val('');
@@ -51,12 +53,12 @@ function copyToClipboard() {
   var bort_type_fpln = "";
   if (bort_type != "")
     bort_type_fpln = " TYP/" + bort_type.toUpperCase();
-  var TEMPLATE = '(FPL-RA'+ $("#bort").val() +'-VG\n' +
-  '-ZZZZ/L-S/C\n' +
+  var TEMPLATE = '(FPL-'+ $("#bort").val() +'-VG\n' +
+  '-ZZZZ/L-'+radio+'\n' +
   '-ZZZZ' + start_time + '\n' +
   '-K'+$("#speed").val().padStart(4, '0')+'M'+$("#altitude").val().slice(0, -1).padStart(4, '0')+' ' + waypoints + '\n' +
   '-ZZZZ'+ $("#duration").val() + '\n' +
-  '-DEP/' + dep + ' DEST/' + dest + ' DOF/' + start_date + ' OPR/' + kws_fio + bort_type_fpln + ' REG/RA' + $("#bort").val() + ' RMK/КВС ' + kws_f + ' +7'+$("#kws-tel").val()+')';
+  '-DEP/' + dep + ' DEST/' + dest + ' DOF/' + start_date + ' OPR/' + kws_fio + bort_type_fpln + ' REG/RA' + $("#bort").val() + ' RMK/КВС ' + kws_f + ' +7'+$("#kws-tel").val() + rmk + ')';
   $("#fplTelegram").val(TEMPLATE);
   $("#koords_info").removeAttr('hidden');
   $("#fplTelegram").removeAttr('hidden');
