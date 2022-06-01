@@ -7,11 +7,14 @@
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="https://jqueryui.com/resources/demos/style.css">
   <link rel="stylesheet" type="text/css" href="./jquery-clockpicker.min.css">
+  <link rel="stylesheet" type="text/css" href="./tooltipster/css/tooltipster.main.min.css">
+  <link rel="stylesheet" type="text/css" href="./tooltipster/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-shadow.min.css">
   <script src="./jquery-3.6.0.js"></script>
   <script src="./jquery-ui.js"></script>
   <script src="./datepicker-ru.js"></script>
   <script src="./jquery-clockpicker.min.js"></script>
   <script src="./jquery.cookie.js"></script>
+  <script type="text/javascript" src="./tooltipster/js/tooltipster.bundle.min.js"></script>
   <script src="./fpln.js"></script>
 <script>
 $( function() {
@@ -37,6 +40,13 @@ $( function() {
   $( ":input").each(function(index) {
     $(this).val($.cookie(this.id));
   })
+
+  $('.tooltip').tooltipster({
+      theme: 'tooltipster-shadow',
+      hideOnClick: true,
+      position: "right"
+    });
+
 } );
 </script>
 </head>
@@ -84,12 +94,12 @@ $( function() {
 </p>
 <p>ФИО КВС:<br><input id="kws-fio"></p>
 <p>Телефон КВС:<br>+7<input name="kws-tel" id="kws-tel" size=10></p>
-<p>Регистрационный номер борта:<br>RA-<input id="bort" size=5 title="Для бортов до 115кг введите ZZZZ"></p>
-<p>Тип борта (необязательно):<br><input id="bort-type" title="Для параплана введите PARAPLAN, для самолета до 115 ULAC"></p>
+<p>Регистрационный номер борта:<br>RA-<input id="bort" size=5 title="Для бортов до 115кг введите ZZZZ" class="tooltip"></p>
+<p>Тип борта (необязательно):<br><input id="bort-type" title="Для параплана введите PARAPLAN, для самолета до 115 ULAC" class="tooltip"></p>
 <p><input type="checkbox" checked id="radio">&nbsp;есть радиосвязь с диспетчером и навигация на борту</p>
 <p>Крейсерская скорость:<br><input id="speed" size=4>&nbsp;км/ч</p>
-<p>Высота полета:<br><input id="altitude" size=4 title="Если указываете максимальную высоту полета например для тренировочных полетов, то в поле комментария указывайте 'ВЫСОТА ДО ...'">&nbsp;метров</p>
-<p>Комментарий (необязательно):<br><input id="rmk" size=20 title="Например: ТРЕНИРОВОЧНЫЕ ПОЛЕТЫ В РАДИУСЕ 5КМ ОТ 5747N06703E. ВЫСОТА ДО 200."></p>
+<p>Высота полета:<br><input id="altitude" size=4 title="Если указываете максимальную высоту полета например для тренировочных полетов, то в поле комментария указывайте 'ВЫСОТА ДО ...'" class="tooltip">&nbsp;метров</p>
+<p>Комментарий (необязательно):<br><input id="rmk" size=20 title="Например: ТРЕНИРОВОЧНЫЕ ПОЛЕТЫ В РАДИУСЕ 5КМ ОТ 5747N06703E. ВЫСОТА ДО 200." class="tooltip"></p>
 <p>Координаты маршрута в формате градусов и <b>минут</b>, как в FPL-телеграмме. Например: 5747N06703E. Минимум 2 координаты. По одной в каждой строке.
   <br><textarea id="koords" rows=6 cols=11></textarea>
   <br>
