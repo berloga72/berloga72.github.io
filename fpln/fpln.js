@@ -19,7 +19,7 @@ function deg2rad(deg) {
 function copyToClipboard() {
   var form_date = new Date($("#start-date-alt").val() + ' ' + $("#start-time").val());
   var start_time = form_date.getUTCHours().toString().padStart(2, '0') + form_date.getUTCMinutes().toString().padStart(2, '0');
-  var start_date = form_date.getUTCFullYear().toString().slice(-2) + form_date.getUTCMonth().toString().padStart(2, '0') + form_date.getUTCDate().toString().padStart(2, '0');
+  var start_date = form_date.getUTCFullYear().toString().slice(-2) + (form_date.getUTCMonth()+1).toString().padStart(2, '0') + form_date.getUTCDate().toString().padStart(2, '0');
   var kws_fio = $("#kws-fio").val().toUpperCase();
   var kws_f = kws_fio.split(' ')[0];
   var koord_lines = $("#koords").val().split('\n');
