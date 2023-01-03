@@ -49,16 +49,32 @@ function copyToClipboard() {
   var dep = koord_lines[0];
   var dest = koord_lines[koord_lines.length-1];
   var waypoints = koord_lines.slice(1,-1).join(' ');
+  var altitude_fpln = $("#altitude").val().slice(0, -1).padStart(4, '0');
+
   var bort_type = $("#bort-type").val().trim();
-  var bort_type_fpln = "";
-  if (bort_type != "")
-    bort_type_fpln = " TYP/" + bort_type.toUpperCase();
+  var bort_type_fpln = (bort_type != "") ? " TYP/" + bort_type.trim().toUpperCase() : "";
+
+  var bort_type_code = $("#bort-type-code").val().trim();
+  var bort_type_code_fpln = (bort_type_code != "") ? bort_type_code.toUpperCase() : "ZZZZ";
+
+  var altn = $("#altn").val().trim();
+  var altn_fpln = (altn != "") ? ' ALTN/'+altn.toUpperCase() : "";
+
+  var radius = $("#radius").val().trim();
+  var zone_field_fpln = "";
+  if (radius != "") {
+    zone_field_fpln = "-ZZZZM0000/M"+altitude_fpln+' /ZONA R'+radius.padStart(3, '0')+' '+dep+'/\n';
+    dest = dep;
+  } else {
+    zone_field_fpln = '-K'+$("#speed").val().padStart(4, '0')+'M'+altitude_fpln+' '+waypoints+'\n';
+  }
+
   var TEMPLATE = '(FPL-'+ $("#bort").val() +'-VG\n' +
-  '-ZZZZ/L-'+radio+'\n' +
+  '-'+bort_type_code_fpln+'/L-'+radio+'\n' +
   '-ZZZZ' + start_time + '\n' +
-  '-K'+$("#speed").val().padStart(4, '0')+'M'+$("#altitude").val().slice(0, -1).padStart(4, '0')+' ' + waypoints + '\n' +
+  zone_field_fpln +
   '-ZZZZ'+ $("#duration").val() + '\n' +
-  '-DEP/' + dep + ' DEST/' + dest + ' DOF/' + start_date + ' OPR/' + kws_fio + bort_type_fpln + ' REG/RA' + $("#bort").val() + ' RMK/КВС ' + kws_f + ' +7'+$("#kws-tel").val() + rmk + ')';
+  '-DEP/' + dep + ' DEST/' + dest + ' DOF/' + start_date + altn_fpln + ' OPR/' + kws_fio + bort_type_fpln + ' REG/RA' + $("#bort").val() + ' RMK/КВС ' + kws_f + ' +7'+$("#kws-tel").val() + rmk + ')';
   $("#fplTelegram").val(TEMPLATE);
   $("#koords_info").removeAttr('hidden');
   $("#fplTelegram").removeAttr('hidden');
