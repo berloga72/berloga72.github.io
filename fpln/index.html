@@ -110,7 +110,8 @@ $( function() {
 <p>Код запасного аэродрома (необязательно):<br><input id="altn" size=3 title="Например, XNTL для аэродрома Ялуторовск." class="tooltip"></p>
 <p>
 
-  <button onclick="copyToClipboard();">Рассчитать расстояния, создать план и скопировать его в буфер</button><br>
+  <button onclick="genFPL('buffer');">Создать план и скопировать его в буфер</button><br><br>
+  <button onclick="genFPL('email');">Создать план и отправить на email</button><br>
 <p id="koords_info"></p>
 <textarea id="fplTelegram" rows=9 cols=50 readonly=true hidden></textarea><br>
 </p>

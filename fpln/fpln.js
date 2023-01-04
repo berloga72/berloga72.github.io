@@ -16,10 +16,12 @@ function deg2rad(deg) {
   return deg * (Math.PI/180)
 }
 
-function copyToClipboard() {
+function genFPL(action) {
   var form_date = new Date($("#start-date-alt").val() + ' ' + $("#start-time").val());
   var start_time = form_date.getUTCHours().toString().padStart(2, '0') + form_date.getUTCMinutes().toString().padStart(2, '0');
+  var start_time4subject = form_date.getUTCHours().toString().padStart(2, '0') + ':' + form_date.getUTCMinutes().toString().padStart(2, '0');
   var start_date = form_date.getUTCFullYear().toString().slice(-2) + (form_date.getUTCMonth()+1).toString().padStart(2, '0') + form_date.getUTCDate().toString().padStart(2, '0');
+  var start_date4subject = form_date.getUTCDate().toString().padStart(2, '0')+'.'+(form_date.getUTCMonth()+1).toString().padStart(2, '0')+'.'+form_date.getUTCFullYear().toString();
   var kws_fio = $("#kws-fio").val().toUpperCase();
   var kws_f = kws_fio.split(' ')[0];
   var koord_lines = $("#koords").val().split('\n');
@@ -27,7 +29,7 @@ function copyToClipboard() {
   var radio = "N/N"; if ($("#radio").is(':checked')) radio = "S/C";
   var distances = [];
   var full_distance = 0;
-  $('#koords_info').val('');
+  $('#koords_info').text('');
   for (let i=0; i<koord_lines.length-1; i++) {
     let k1 = koord_lines[i];
     let k2 = koord_lines[i+1];
@@ -78,8 +80,14 @@ function copyToClipboard() {
   $("#fplTelegram").val(TEMPLATE);
   $("#koords_info").removeAttr('hidden');
   $("#fplTelegram").removeAttr('hidden');
-  var copyText = document.getElementById("fplTelegram");
-  copyText.select();
-  document.execCommand("copy");
+  var fplText = document.getElementById("fplTelegram");
+  if (action == "buffer") {
+    fplText.select();
+    document.execCommand("copy");
+  } else if (action == "email") {
+    window.open('mailto:plan@rgc.ans.aero?subject='
+      + encodeURIComponent('Полетный план на '+start_date4subject+' '+start_time4subject+' UTC') + '&body='
+      + encodeURIComponent($("#fplTelegram").val()));
+  }
   //alert("Скопировано!");
 };
