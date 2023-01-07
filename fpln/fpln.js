@@ -84,10 +84,12 @@ function genFPL(action) {
   if (action == "buffer") {
     fplText.select();
     document.execCommand("copy");
+    ym(91968641, 'hit', '#copyFPLN'); // Yandex metrica
   } else if (action == "email") {
     window.open('mailto:plan@rgc.ans.aero?subject='
       + encodeURIComponent('Полетный план на '+start_date4subject+' '+start_time4subject+' UTC') + '&body='
       + encodeURIComponent($("#fplTelegram").val()));
+    ym(91968641, 'hit', '#emailFPLN'); // Yandex metrica
   }
   //alert("Скопировано!");
 };
