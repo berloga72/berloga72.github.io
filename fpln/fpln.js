@@ -70,13 +70,17 @@ function genFPL(action) {
   } else {
     zone_field_fpln = '-K'+$("#speed").val().padStart(4, '0')+'M'+altitude_fpln+' '+waypoints+'\n';
   }
+  var reg_fpln = "";
+  if ($("#bort").val() != "ZZZZ" && $("#bort").val() != "") {
+    reg_fpln=' REG/RA' + $("#bort").val();
+  }
 
   var TEMPLATE = '(FPL-'+ $("#bort").val() +'-VG\n' +
   '-'+bort_type_code_fpln+'/L-'+radio+'\n' +
   '-ZZZZ' + start_time + '\n' +
   zone_field_fpln +
   '-ZZZZ'+ $("#duration").val() + '\n' +
-  '-DEP/' + dep + ' DEST/' + dest + ' DOF/' + start_date + altn_fpln + ' OPR/' + kws_fio + bort_type_fpln + ' REG/RA' + $("#bort").val() + ' RMK/КВС ' + kws_f + ' +7'+$("#kws-tel").val() + rmk + ')';
+  '-DEP/' + dep + ' DEST/' + dest + ' DOF/' + start_date + altn_fpln + ' OPR/' + kws_fio + bort_type_fpln + reg_fpln + ' RMK/КВС ' + kws_f + ' +7'+$("#kws-tel").val() + rmk + ')';
   $("#fplTelegram").val(TEMPLATE);
   $("#koords_info").removeAttr('hidden');
   $("#fplTelegram").removeAttr('hidden');
