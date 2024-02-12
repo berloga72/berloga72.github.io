@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<head>
+    <meta name="robots" content="noindex">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js">
+    </script>  
+    <style>
+          .input_copy .icon {
+              max-width: 25px;
+              cursor: pointer;
+          }
+          
+          .input_copy .icon img{
+            max-width: 25px;
+          }
+          .input_copy .txt {
+              display: inline-block;
+          }
+          
+          
+          /* click animation */
+          
+          .flashBG {
+              animation-name: flash;
+              animation-timing-function: ease-out;
+              animation-duration: 1s;
+          }
+          
+          @keyframes flash {
+              0% {
+                  background: #28a745;
+              }
+              100% {
+                  background: transparent;
+              }
+          }
+    </style>    
+    <script>
+function copyToClipboard(element) {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val($(element).text()).select();
+    document.execCommand("copy");
+    $temp.remove();
+}
+function initialJS() {
+var addrsField = $('.input_copy .txt');
+//addrsField.text(window.location);
+$('.input_copy .icon').click(function() {
+        copyToClipboard('.input_copy .txt');
+        addrsField.addClass('flashBG')
+          .delay('1000').queue(function(){
+            addrsField.removeClass('flashBG').dequeue();
+        });
+    });
+}
+    </script>
+</head>
+<body onload="initialJS()">
+
+    <b>Сайт:</b><br><a href="http://demo4.traccar.org">demo4.traccar.org</a><br><br>
+    <b>Логин (email):</b>
+    <div class="input_copy_wrapper">
+        <div class="input_copy">
+          <span class="txt">jblack557755@gmail.com</span>
+          <span class="icon right">
+           <img src="http://clipground.com/images/copy-4.png" title="Скопировать в буфер">
+          </span>
+        </div> 
+    </div>
+    <br>
+    <b>Пароль:</b><br>первые буквы фамилии, имени, отчества на латинице маленькими буквами. Всего три символа.<br>
+
+</body>
+</html>
