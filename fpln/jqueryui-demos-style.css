@@ -1,0 +1,12 @@
+/* CSS FROM https://jqueryui.com/resources/demos/style.css */
+body {
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+table {
+	font-size: 1em;
+}
+
+.ui-draggable, .ui-droppable {
+	background-position: top;
+}
